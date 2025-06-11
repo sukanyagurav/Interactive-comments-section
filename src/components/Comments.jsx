@@ -4,15 +4,18 @@ import Comment from './Comment';
 import CommentInput from './CommentInput';
 const Comments = () => {
   const [commentsList, setCommentsList] = useState(data);
-  console.log(commentsList);
+  function handleSave(comment){
+  
+  }
   return (
-    <section className="flex flex-col gap-8 max-w-[900px] w-full mx-auto py-10 px-4">
+    <section className="flex flex-col max-w-[900px] w-full mx-auto py-10 px-4 my-14">
       {commentsList.comments.map((comment) => {
         return (
           <>
             <Comment
               key={comment.id}
               {...comment}
+              currentUser={data.currentUser}
             />
            
           </>

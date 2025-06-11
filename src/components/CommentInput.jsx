@@ -1,19 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react';
 
-const CommentInput = ({currentUser}) => {
+const CommentInput = ({ currentUser,type="send" }) => {
+  const [comment, setComment] = useState('');
+  const [error, setError] = useState('');
+
+  function handleSubmit() {
+  }
   return (
-    <div className='bg-white p-6 flex  gap-4 h-32 rounded-md items-start'>
-      <img src={currentUser.image.png || currentUser.image.webp} alt={currentUser.username} className='w-9 h-9 ' /> 
-      <textarea placeholder='Add a comment...' 
+    <>
+      <div className="bg-white p-6 rounded-md  relative">
+        <div className=" flex  gap-4  items-start mb-4">
+          <img
+            src={currentUser.image.png || currentUser.image.webp}
+            alt={currentUser.username}
+            className="w-9 h-9 "
+          />
+          <textarea
+            placeholder="Add a comment..."
+            className="border-3 border-grey-100 w-full p-4 resize-none h-[130px]  rounded-md"
+            valu={comment}
+            onChange={(e) => setComment(e.target.value)}
+          ></textarea>
+          <button
+            className="text-gray-100 p-6 py-2 rounded-lg bg-purple-600 ml-auto hover:bg-purple-200 transition-all duration-300 sendBtn"
+            onClick={handleSubmit}
+          >
+            {type == 'send' ? 'Send': 'Reply'}
+          </button>
+        </div>
+       
+      </div>
+    </>
+  );
+};
 
-      className='border-3 border-grey-100 w-full p-4  no-resize rounded-md'>
-
-      </textarea>
-      <button className='text-gray-100 p-6 py-2 rounded-lg bg-purple-600 ml-auto'>
-        Send
-      </button>
-    </div>
-  )
-}
-
-export default CommentInput
+export default CommentInput;
