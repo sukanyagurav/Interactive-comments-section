@@ -11,3 +11,6 @@
   --color-grey-50: hsl(228, 33%, 97%);
   --color-white: hsl(0, 100%, 100%);
 }
+button{
+  @apply cursor-pointer;
+}
