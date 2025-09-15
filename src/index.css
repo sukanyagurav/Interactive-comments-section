@@ -17,3 +17,6 @@ button{
 buttonp:disabled{
   @apply bg-purple-200;
 }
+.btn:hover img{
+  filter: brightness(0) saturate(100%) invert(39%) sepia(83%) saturate(749%) hue-rotate(253deg) brightness(91%) contrast(87%);
+}

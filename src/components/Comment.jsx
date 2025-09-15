@@ -1,18 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CommentInput from './CommentInput';
 
-const Comment = ({ content, createdAt, score, user, replies, currentUser }) => {
-  const [reply, setReply] = useState(false);
+const Comment = ({
+  content,
+  createdAt,
+  score,
+  user,
+  replies,
+  currentUser,
+  onReply,
+  showReplyInput,
+  onReplySubmit,
+  id,
+  onVote,
+}) => {
   const [edit, setEdit] = useState(false);
-  const [editedContent,setEditedContent] = useState(content);
-  function handleUpVote(user){
-  
-  }
+  const [editedContent, setEditedContent] = useState(content);
+
+
+  useEffect(() => {
+    setEditedContent(content);
+  }, [content]);
   return (
     <>
       <div className="comment bg-white p-5 rounded-md flex gap-4 md:gap-6 my-4 items-center">
         <div className="comment-btns bg-gray-100 p-4 flex flex-col gap-4 items-center w-16 rounded-md">
-          <button onClick={()=>handleUpVote(user)}>
+          <button
+            onClick={() => onVote(id, 1)}
+            className="btn"
+     
+          >
             <img
               src="./images/icon-plus.svg"
               alt=""
@@ -21,14 +38,18 @@ const Comment = ({ content, createdAt, score, user, replies, currentUser }) => {
           <span className="text-purple-600 block  font-extrabold ">
             {score}
           </span>
-          <button>
+          <button
+            onClick={() => onVote(id, -1)}
+            className="btn"
+            
+          >
             <img
               src="./images/icon-minus.svg"
               alt=""
             />
           </button>
         </div>
-        <div className='w-full'>
+        <div className="w-full">
           <div className="flex items-center">
             <div className="flex items-center gap-4">
               <img
@@ -42,7 +63,7 @@ const Comment = ({ content, createdAt, score, user, replies, currentUser }) => {
             {currentUser.username != user.username && (
               <button
                 className="flex items-center gap-2  ml-auto text-purple-600 font-bold hover:text-purple-200 transition-all duration-300 "
-                onClick={() => setReply(true)}
+                onClick={() => onReply(id)}
               >
                 <img
                   src="./images/icon-reply.svg"
@@ -61,16 +82,18 @@ const Comment = ({ content, createdAt, score, user, replies, currentUser }) => {
                   Delete
                 </button>
                 <div>
-                  {!edit && <button
-                    className="flex items-center gap-2  ml-auto text-purple-600 font-bold hover:text-purple-200 transition-all duration-300"
-                    onClick={() => setEdit(true)}
-                  >
-                    <img
-                      src="./images/icon-edit.svg"
-                      alt=""
-                    />
-                    Edit
-                  </button>}
+                  {!edit && (
+                    <button
+                      className="flex items-center gap-2  ml-auto text-purple-600 font-bold hover:text-purple-200 transition-all duration-300"
+                      onClick={() => setEdit(true)}
+                    >
+                      <img
+                        src="./images/icon-edit.svg"
+                        alt=""
+                      />
+                      Edit
+                    </button>
+                  )}
                   {edit && (
                     <button
                       className="flex items-center gap-2  ml-auto text-purple-600 font-bold hover:text-purple-200 transition-all duration-300"
@@ -93,16 +116,16 @@ const Comment = ({ content, createdAt, score, user, replies, currentUser }) => {
                 value={editedContent}
                 onChange={(e) => setEditedContent(e.target.value)}
               />
-              
             </div>
           )}
         </div>
       </div>
-      {reply && (
+      {showReplyInput && (
         <div className="ml-4">
           <CommentInput
             currentUser={currentUser}
             type="reply"
+            onSave={(text) => onReplySubmit(id, text)}
           />
         </div>
       )}
@@ -113,6 +136,11 @@ const Comment = ({ content, createdAt, score, user, replies, currentUser }) => {
               key={reply.id}
               {...reply}
               currentUser={currentUser}
+              onReply={onReply}
+              showReplyInput={false}
+              onReplySubmit={onReplySubmit}
+              id={reply.id}
+              onVote={onVote}
             />
           ))}
         </div>

@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
 
-const CommentInput = ({ currentUser,type="send" }) => {
+const CommentInput = ({ currentUser,type="send",onSave }) => {
   const [comment, setComment] = useState('');
   const [error, setError] = useState('');
 
   function handleSubmit() {
+    if (comment.trim() === "") {
+      setError("Comment cannot be empty.");
+      return;
+    }
+    if (onSave) {
+      onSave(comment);
+      setComment(""); // Clear input after saving
+    }
   }
   return (
     <>
@@ -28,7 +36,7 @@ const CommentInput = ({ currentUser,type="send" }) => {
             {type == 'send' ? 'Send': 'Reply'}
           </button>
         </div>
-       
+       {error && <div className="text-red-500">{error}</div>}
       </div>
     </>
   );
